@@ -1,0 +1,124 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+    min-width: 1130px;
+    margin: 0;
+    padding: 0;
+}
+
+.mr-content {
+    height: 100%;
+    width: 80%;
+    margin: auto;
+    padding: 0px;
+
+}
+
+.con-up {
+    height: 13%;
+    width: 100%;
+    background-color: rgb(255, 68, 1);
+    float: left;
+}
+
+.logo {
+    height: 100%;
+    width: 22%;
+    float: left;
+}
+
+.logo-img {
+    height: 80%;
+    width: 80%;
+    margin: 10px;
+}
+
+.hengdaohang {
+    height: 100%;
+    width: 78%;
+    float: left;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+}
+
+.hengdaohang-item {
+    height: 92px;
+    line-height: 92px;
+    width: 20%;
+    float: left;
+    color: #FFF;
+    font-size: 20px;
+    text-align: center;
+}
+
+.hengdaohang :hover {
+    font-size: 23px;
+}
+
+.con-down {
+    height: 87%;
+    width: 100%;
+}
+
+.down-left {
+    height: 100%;
+    width: 23%;
+    float: left;
+    background-color: rgb(245, 248, 250);
+}
+
+.left-xinxi {
+    height: 160px;
+    width: 150px;
+    text-align: center;
+    vertical-align: center;
+    margin: auto;
+}
+
+.xinxi-touxiang {
+    height: 130px;
+    width: 130px;
+    object-fit: cover;
+    /* margin:auto; */
+    margin-top: 10px;
+    border-radius: 200px;
+    text-align: center;
+
+}
+
+.xinxi-name {
+    height: 30px;
+    line-height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+}
+
+ul {
+    position: relative;
+    padding: 0;
+    list-style: none;
+}
+
+.liedaohang li {
+    height: 50px;
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: #000;
+    cursor: pointer;
+}
+
+.liedaohang :hover {
+    color: rgb(255, 68, 1);
+    font-size: 20px;
+}
+
+.down-right {
+    height: 100%;
+    width: 77%;
+    float: left;
+
+}

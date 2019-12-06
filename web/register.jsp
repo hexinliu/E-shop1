@@ -1,0 +1,240 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: 馨
+  Date: 2019/11/5
+  Time: 20:41
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+    <link href="css/register.css" media="screen" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script>
+        /*
+            //注意#对应id选择器
+         表单校验
+            1.用户名，单词字符，长度8到20位
+            2.密码：单词字符，长度8到20位
+            3.email：邮件格式
+            4.姓名：非空
+            5.手机号：手机号格式
+            6.出生日期：非空（使用插件）
+            7.验证码：非空
+         */
+        function checkUsername() {
+            //获取用户名
+            var username = $("#username").val();
+            //定义正则表达式 \w匹配字母数字或下划线或汉字,等价于'[A-Za-z0-9_]'(还包含希腊字符，俄文字符)
+            var reg_username = /^\w{6,12}$/
+            //判断,给出提示信息
+            var flag = reg_username.test(username);
+            if (flag) {
+                //用户名合法
+                $("#username").css("border", "");
+            } else {
+                //用户名非法,加一个红色边框
+                $("#username").css("border", "1px solid red");
+            }
+            return flag;
+        }
+
+        function checkPassword() {
+            //获取密码
+            var password = $("#userPassword").val();
+            //定义正则表达式
+            var reg_password = /^\w{6,12}$/;
+            //判断,给出提示信息
+            var flag = reg_password.test(password);
+            if (flag) {
+                //密码合法
+                $("#userPassword").css("border", "");
+            } else {
+                //密码非法,加一个红色边框
+                $("#userPassword").css("border", "1px solid red");
+            }
+            return flag;
+        }
+
+        //校验电话号码
+        function checkPhone() {
+            var phone = $("#userPhone").val();
+
+            var reg_phone = /^[0-9]{11}$/;
+
+            var flag = reg_phone.test(phone);
+            if (flag) {
+                $("#userPhone").css("border", "");
+            } else {
+                $("#userPhone").css("border", "1px solid red");
+            }
+
+            return flag;
+        }
+
+        //校验邮箱
+        function checkEmail() {
+            //获取邮箱
+            var email = $("#userEmail").val();
+            //定义正则表达式
+            var reg_email = /^\w+@\w+\.\w+$/;
+            //判断,给出提示信息
+            var flag = reg_email.test(email);
+            if (flag) {
+                $("#userEmail").css("border", "");
+            } else {
+                $("#userEmail").css("border", "1px solid red");
+            }
+            return flag;
+        }
+
+        //入口函数
+        $(function () {
+
+            $("#img_checkCode").click(function () {
+                var date = new Date().getTime();
+                // alert(date);
+                $("#img_checkCode").prop("src", "/CheckCodeServlet?" + date);
+            });
+
+            //当某个组件失去焦点时,调用对应的校验方法
+            $("#username").blur(checkUsername);
+            $("#userPassword").blur(checkPassword);
+            $("#userEmail").blur(checkEmail);
+            $("#userPhone").blur(checkPhone);
+
+            //当表单提交时,调用所有的校验方法
+            $("#registerForm").submit(function () {
+                //1.发送数据到服务器
+                if (checkUsername() && checkPassword() && checkEmail() && checkPhone()) {
+                    //校验通过,发送Ajax请求,提交表单的数据(第二个参数作用：将要提交的数据序列化为
+                    //username=zhangsan&password=123 这种形式)
+                    $.post("registerUserServlet", $(this).serialize(), function (data) {
+                        //处理服务器响应的数据  data
+                        if (data.flag == true) {
+                            //注册成功，跳转成功页面
+                            location.href = "login.html";
+                            return true;
+                        } else {
+                            //注册失败,在表单上给出提示信息
+                            $("#errorMsg").html(data.errorMsg);
+                        }
+                    })
+                }
+                //2.跳转页面
+                return false;
+                //如果这个方法没有返回值,或者返回true,表单提交
+                //如果返回false,则表单不提交
+            });
+            //当某个组件失去焦点时,调用对应的校验方法
+            /*   $("#username").blur(checkUsername);
+               $("#userPassword").blur(checkPassword);
+               $("#userEmail").blur(checkEmail);*/
+        });
+
+        //点击超链接或者图片，换一张
+        //1.给超链接和图片绑定点击事件
+        /*   window.onload = function(){
+               //获取图片对象
+               var img = document.getElementById("img_checkCode");
+               //绑定点击事件
+               img.onclick = function () {
+                   //加时间戳
+                   var date = new Date().getTime();//(获取的是毫秒值)
+                   img.src = "/CheckCodeServlet?"+date;
+               }
+           }*/
+        //2.重新设置图片的src属性
+
+    </script>
+
+</head>
+<body>
+<div class="xiao-container">
+    <div class="xiao-register-box">
+        <div class="xiao-title-box">
+            <span>用户注册</span><br>
+            <span id="errorMsg" style="color:red;text-align: center;font-size: 14px"></span>
+        </div>
+        <!-- <div id="errorMsg" style="color:red;text-align: center;margin-top: 70px;height: 30px">
+             错误信息！！！
+         </div>-->
+        <form id="registerForm" method="post">
+            <div class="xiao-username-box">
+                <span class="xiao-require">*</span>
+                <label for="username">用户名</label>
+                <div class="xiao-username-input">
+                    <input type="text" id="username" name="username" placeholder="请输入用户名 长度:6-12个字符"/>
+                </div>
+            </div>
+
+            <div class="xiao-userPassword-box">
+                <span class="xiao-require">*</span>
+                <label for="userPassword">密码</label>
+                <div class="xiao-userPassword-input">
+                    <input type="password" id="userPassword" name="password" placeholder="请输入密码 长度:6-12个字符"/>
+                </div>
+            </div>
+
+            <!--           <div class="xiao-userRePassword-box">
+                           <span class="xiao-require">*</span>
+                           <label for="userRePassword">确认密码</label>
+                           <div class="xiao-userRePassword-input">
+                               <input type="password" id="userRePassword" name="userRePassword" placeholder="请重复输入密码" />
+                           </div>
+                       </div>-->
+
+            <div class="xiao-userPhone-box">
+                <span class="xiao-require">*</span>
+                <label for="userPhone">手机号码</label>
+                <div class="xiao-userPhone-input">
+                    <input type="text" id="userPhone" name="userphone" placeholder="请输入您的手机号码，11位有效数字"/>
+                </div>
+            </div>
+
+            <div class="xiao-userEmail-box">
+                <span class="xiao-require">*</span>
+                <label for="userEmail">电子邮箱</label>
+                <div class="xiao-userEmail-input">
+                    <input type="text" id="userEmail" name="email" placeholder="请输入您的邮箱地址，如：123@qq.com"/>
+                </div>
+            </div>
+
+            <!--            <div class="xiao-userGender-box">
+                            <span class="xiao-require">*</span>
+                            <label for="userGender">性别</label>
+                            <div class="xiao-userGender-input">
+                                <input type="radio" id="userGender_01" name="userGender" value="0" checked="checked" />男
+                                <input type="radio" id="userGender_02" name="userGender" value="1" />女
+                            </div>
+                        </div>-->
+
+            <div class="xiao-userGender-box">
+                <span class="xiao-require">*</span>
+                <label for="code">验证码</label>
+                <div class="xiao-userGender-input">
+                    <input type="text" id="code" name="checkCode" placeholder="请输入验证码"/><br>
+                </div>
+            </div>
+
+            <div class="xiao-code-box">
+                <img id="img_checkCode" src="/CheckCodeServlet"/>
+            </div>
+
+            <div class="xiao-submit-box">
+                <input class="submit" type="submit" value="注册">
+            </div>
+
+            <div class="xiao-goLogin-box">
+                <a href="#" style="text-decoration: none;">已有账号？去登录</a>
+            </div>
+
+        </form>
+        <!-- <div class="xiao-submit-box">
+             <input class="submit" type="submit" value="注册">
+         </div>-->
+    </div>
+</div>
+</body>
+</html>
